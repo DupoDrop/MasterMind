@@ -17,7 +17,6 @@ public class MastermindClient
             OutputStream serverOut = sock.getOutputStream();
             InputStream serverIn = sock.getInputStream();
             Scanner userScanner = new Scanner(System.in);
-            Scanner serverScanner = new Scanner(serverIn);
 
             String msgIn;
             int commandIn;
@@ -67,7 +66,7 @@ public class MastermindClient
                                     combination.add(userScanner.next());
                                 while(userScanner.hasNext());
 
-                                Protocole.combinationAnalysis(serverOut, combination);
+                                ClientProtocole.combinationAnalysis(serverOut, serverIn, combination);
 
                                 correctInput = true;
                                 break;
