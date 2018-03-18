@@ -8,7 +8,7 @@ public enum Color
     BLACK("black", 5);
 
     private final String name;
-    private final int code;
+    private final byte code;
 
     private Color(String name, int code)
     {
@@ -26,7 +26,7 @@ public enum Color
         return code;
     }
 
-    public static int getAssociatedCode(String name) throws ColorException
+    public static byte getAssociatedCode(String name) throws ColorException
     {
         for (Color col : Color.values())
         {
