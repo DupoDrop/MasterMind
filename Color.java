@@ -1,16 +1,17 @@
 public enum Color
 {
-    RED("red", 0),
-    BLUE("blue", 1),
-    YELLOW("yellow", 2),
-    GREEN("green", 3),
-    WHITE("white", 4),
-    BLACK("black", 5);
+    RED("red", (byte) 0),
+    BLUE("blue", (byte) 1),
+    YELLOW("yellow", (byte) 2),
+    GREEN("green", (byte) 3),
+    WHITE("white", (byte) 4),
+    BLACK("black", (byte) 5);
 
     private final String name;
     private final byte code;
+    private static final int size = Color.values().length;
 
-    private Color(String name, int code)
+    Color(String name, byte code)
     {
         this.name = name;
         this.code = code;
@@ -21,17 +22,32 @@ public enum Color
         return name;
     }
 
-    public int getCode()
+    public byte getCode()
     {
         return code;
     }
 
-    public static byte getAssociatedCode(String name) throws ColorException
+    public static int getSize()
+    {
+        return size;
+    }
+
+    public static Color getAssociatedColor(String name) throws ColorException
     {
         for (Color col : Color.values())
         {
             if (col.name == name)
-                return col.code;
+                return col;
+        }
+        throw new ColorException();
+    }
+
+    public static Color getAssociatedColor(byte code) throws ColorException
+    {
+        for (Color col : Color.values())
+        {
+            if (col.code == code)
+                return col;
         }
         throw new ColorException();
     }

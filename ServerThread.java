@@ -5,6 +5,7 @@ import java.net.Socket;
 public class ServerThread
 {
     private Socket sock;
+    private Color[] solution = new Color[Color.getSize()];
     private Color[][] combinations = new Color[12][4];
     private int[][] answers = new int[12][2];
     private int nbAttempts = 0;
@@ -12,6 +13,10 @@ public class ServerThread
     ServerThread(Socket sock)
     {
         this.sock = sock;
+        for(byte i = 0; i < solution.length ; i++)
+        {
+            solution(i)
+        }
     }
 
     public void run()

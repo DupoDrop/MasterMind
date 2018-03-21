@@ -15,13 +15,13 @@ public class Protocole
     protected static final byte LIST_RECEIVED = 3;
     protected static final byte REQUEST_ERROR = 4;
 
-    protected static void tryWrite(OutputStream out, byte message) throws IOException
+    protected static void try_write(OutputStream out, byte message) throws IOException
     {
         final int MAXTRY = 100;
         int count = 0;
         boolean succeed = false;
 
-        while(!succeed)
+        while (!succeed)
         {
             try
             {
