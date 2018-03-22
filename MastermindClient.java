@@ -65,16 +65,14 @@ public class MastermindClient
                                         {
 
                                             System.out.println("enter the combination:");
-                                            ArrayList<String> combination = new ArrayList<String>;
+                                            ArrayList<String> combination = new ArrayList<String>();
 
                                             //I use a do while so that it waits for the user to enter the line and only then stop if there is no token.
                                             do
                                                 combination.add(userScanner.next());
                                             while (userScanner.hasNext());
 
-                                            byte[] analysisResult = new byte[2];
-                                            analysisResult = ClientProtocole.combination_analysis(serverOut, serverIn, combination);
-
+                                            byte[] analysisResult = ClientProtocol.combination_analysis(serverOut, serverIn, combination);
                                             nbProposition++;
 
                                             System.out.println("There are " + analysisResult[0] + " well placed colors and " + analysisResult[1] + "good but wrong placed colors");
@@ -84,35 +82,34 @@ public class MastermindClient
                                         //if an exception is cached, succeed will not be set to true, the program will thus ask the combination again.
                                         catch (ColorException e)
                                         {
-                                            System.out.println("A wrong color has been entered.")
+                                            System.out.println("A wrong color has been entered.");
                                             System.out.print("the possible colors are:");
-                                            for(Color col : Color.values())
+                                            for (Color col : Color.values())
                                             {
-                                                System.out.print(" " + col.getName());
+                                                System.out.print(" " + col.get_name());
                                             }
                                             System.out.println();
                                         }
 
                                         catch (CombinationLengthException e)
                                         {
-                                            System.out.println("The entered combination has not the expected length. The length of the combination should be " + Protocole.COMBINATION_LENGTH);
+                                            System.out.println("The entered combination has not the expected length. The length of the combination should be " + ClientProtocol.COMBINATION_LENGTH);
                                         }
 
                                         break;
 
                                     case 2:
 
-                                        byte[][] list = new byte[nbProposition][Protocole.COMBINATION_LENGTH + 2];
-                                        list = ClientProtocole.combination_list(serverOut, serverIn, nbProposition);
+                                        byte[][] list = ClientProtocol.combination_list(serverOut, serverIn, nbProposition);
 
                                         System.out.println("Voici la liste des combinaisons déjà testées:");
                                         for (int i = 0; i < nbProposition; i++)
                                         {
-                                            for (int j = 0; j < Protocole.COMBINATION_LENGTH; j++)
-                                                System.out.print(Color.getAssociatedColor(list[i][j]) + " ");
+                                            for (int j = 0; j < ClientProtocol.COMBINATION_LENGTH; j++)
+                                                System.out.print(Color.get_associated_color(list[i][j]) + " ");
 
-                                            System.out.print("well placed: " + list[i][Protocole.COMBINATION_LENGTH] + " ");
-                                            System.out.println("bad placed: " + list[i][Protocole.COMBINATION_LENGTH + 1]);
+                                            System.out.print("well placed: " + list[i][ClientProtocol.COMBINATION_LENGTH] + " ");
+                                            System.out.println("bad placed: " + list[i][ClientProtocol.COMBINATION_LENGTH + 1]);
                                         }
 
                                         succeed = true;
@@ -120,7 +117,7 @@ public class MastermindClient
 
                                     case 3:
 
-                                        ClientProtocole.new_game(serverOut, serverIn);
+                                        ClientProtocol.new_game(serverOut, serverIn);
                                         nbProposition = 0;
                                         System.out.println("A new game starts.");
 
@@ -140,15 +137,15 @@ public class MastermindClient
 
                                 sock.close();
                                 sock = new Socket("localhost", 2059);
-                                OutputStream serverOut = sock.getOutputStream();
-                                InputStream serverIn = sock.getInputStream();
+                                serverOut = sock.getOutputStream();
+                                serverIn = sock.getInputStream();
                             }
                         }
                     }
                 }
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             System.out.println("An unexpected exception occurred, ending the program");
         }

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.lang.*;
 import java.net.*;
 
@@ -15,7 +16,7 @@ public class MastermindServer
                 client.start();
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
 
         }

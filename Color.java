@@ -17,32 +17,27 @@ public enum Color
         this.code = code;
     }
 
-    public String getName()
+    public String get_name()
     {
         return name;
     }
 
-    public byte getCode()
+    public byte get_code()
     {
         return code;
     }
 
-    public static int getSize()
-    {
-        return size;
-    }
-
-    public static Color getAssociatedColor(String name) throws ColorException
+    public static Color get_associated_color(String name) throws ColorException
     {
         for (Color col : Color.values())
         {
-            if (col.name == name)
+            if (col.name.equals(name))
                 return col;
         }
         throw new ColorException();
     }
 
-    public static Color getAssociatedColor(byte code) throws ColorException
+    public static Color get_associated_color(byte code) throws ColorException
     {
         for (Color col : Color.values())
         {
@@ -51,4 +46,20 @@ public enum Color
         }
         throw new ColorException();
     }
+
+    public static Color[] get_random_combination(int nbColor)
+    {
+        Color result[] = new Color[nbColor];
+        try
+        {
+            for (byte i = 0; i < nbColor; i++)
+                result[i] = (Color.get_associated_color((byte) (Math.floor(Math.random() * size))));
+        }
+        catch (ColorException e)
+        {
+            // A ColorException is not possible.
+        }
+        return result;
+    }
+
 }
