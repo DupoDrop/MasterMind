@@ -16,7 +16,7 @@ public class Protocol
     protected static final byte LIST_RECEIVED = 3;
     protected static final byte REQUEST_ERROR = 4;
 
-    protected static void try_write(OutputStream out, byte message) throws IOException
+    protected static void try_write(OutputStream out, byte[] message) throws IOException
     {
         final int MAX_TRY = 100;
         int count = 0;

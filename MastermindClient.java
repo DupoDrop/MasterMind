@@ -1,10 +1,15 @@
-import java.lang.*;
-import java.util.*;
-import java.io.*;
-import java.net.*;
+
 
 //TODO : ajouter des flush entre chaque étape?
 //TODO : gérer les ctrl+c voir handling SIGINT, ne pas oublier de close le socket quand ce signal est catch
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class MastermindClient
 {
@@ -70,8 +75,14 @@ public class MastermindClient
                                             System.out.println("enter the combination:");
 
                                             String tmp;
+                                            ArrayList<String> combination = new ArrayList<String>();
+
                                             tmp = userScanner.nextLine();
-                                            String[]combination = tmp.split(" ");
+                                            StringTokenizer st = new StringTokenizer(tmp);
+
+                                            while(st.hasMoreTokens())
+                                                combination.add(st.nextToken());
+
 
                                             byte[] analysisResult = ClientProtocol.combination_analysis(serverOut, serverIn, combination);
                                             nbProposition++;
@@ -174,7 +185,8 @@ public class MastermindClient
         }
         catch (IOException e)
         {
-            System.out.println("input/output problem, ending the program");
+            System.out.println("impossible to connect to the server, please verify server state");
+            System.out.println("ending the program");
         }
         catch (Exception e)
         {

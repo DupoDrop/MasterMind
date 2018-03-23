@@ -32,38 +32,39 @@ public class ServerProtocol extends Protocol
 
     public static void game_started(OutputStream out) throws IOException
     {
-        try_write(out, VERSION);
-        try_write(out, GAME_STARTED);
+        byte[] message = {VERSION, GAME_STARTED};
+        try_write(out, message);
     }
 
     public static void combination_answer(OutputStream out, int wellPlaced, int wrongPlaced) throws IOException
     {
-        try_write(out, VERSION);
-        try_write(out, COMBINATION_RECEIVED);
-        try_write(out, (byte)wellPlaced);
-        try_write(out, (byte)wrongPlaced);
+        byte[] message = {VERSION, COMBINATION_RECEIVED, (byte)wellPlaced, (byte)wrongPlaced};
+        try_write(out, message);
     }
 
     public static void send_list(OutputStream out, int nbCombinations, Color[][] combination, int[][] answer) throws IOException
     {
-        try_write(out, VERSION);
-        try_write(out, LIST_RECEIVED);
-        try_write(out, (byte)nbCombinations);
+        byte[] message = new byte[3+nbCombinations*(COMBINATION_LENGTH+2)];
+
+        message[0] = VERSION;
+        message[1] = LIST_RECEIVED;
+        message[2] = (byte)nbCombinations;
 
         for (int i = 0; i < nbCombinations; i++)
         {
             for (int j = 0; j < COMBINATION_LENGTH; j++)
-                try_write(out, combination[i][j].get_code());
+                message[3+(COMBINATION_LENGTH+2)*i+j] = combination[i][j].get_code();
 
             for (int j = 0; j < 2; j++)
-                try_write(out, (byte) answer[i][j]);
-
+                message[3+(COMBINATION_LENGTH+2)*i+j+COMBINATION_LENGTH] = (byte) answer[i][j];
         }
+
+        try_write(out, message);
     }
 
     public static void request_error(OutputStream out) throws IOException
     {
-        try_write(out, VERSION);
-        try_write(out, REQUEST_ERROR);
+        byte message[] = {VERSION, REQUEST_ERROR};
+        try_write(out, message);
     }
 }
