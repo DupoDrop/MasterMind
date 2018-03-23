@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 //TODO : add timeout if the server does not respond. the server does not respond, enter quit to quit.
 
@@ -16,16 +15,16 @@ public class ClientProtocol extends Protocol
             throw new ServerException();
     }
 
-    public static byte[] combination_analysis(OutputStream out, InputStream in, ArrayList<String> combination) throws CombinationLengthException, ColorException, IOException, ServerException
+    public static byte[] combination_analysis(OutputStream out, InputStream in, String[] combination) throws CombinationLengthException, ColorException, IOException, ServerException
     {
-        if (combination.size() != COMBINATION_LENGTH)
+        if (combination.length != COMBINATION_LENGTH)
             throw new CombinationLengthException();
 
         try_write(out, VERSION);
         try_write(out, COMBINATION_ANALYSIS_REQUEST);
 
         for (int i = 0; i < COMBINATION_LENGTH; i++)
-            try_write(out, (Color.get_associated_color(combination.get(i))).get_code());
+            try_write(out, (Color.get_associated_color(combination[i])).get_code());
 
         if (in.read() != VERSION || in.read() != COMBINATION_RECEIVED)
             throw new ServerException();
@@ -45,7 +44,7 @@ public class ClientProtocol extends Protocol
         try_write(out, VERSION);
         try_write(out, COMBINATION_LIST_REQUEST);
 
-        if (in.read() != VERSION || in.read() != numberTested)
+        if (in.read() != VERSION || in.read() != LIST_RECEIVED || in.read() != numberTested)
             throw new ServerException();
 
         byte[][] result = new byte[numberTested][COMBINATION_LENGTH + 2];

@@ -56,7 +56,8 @@ public class ServerProtocol extends Protocol
                 try_write(out, combination[i][j].get_code());
 
             for (int j = 0; j < 2; j++)
-                try_write(out, (byte)answer[i][j]);
+                try_write(out, (byte) answer[i][j]);
+
         }
     }
 

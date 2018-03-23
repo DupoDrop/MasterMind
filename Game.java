@@ -21,6 +21,10 @@ public class Game
     {
         nbAttempts = 0;
         solution = Color.get_random_combination(this.combinationSize);
+        System.out.print("New game started, the solution is: ");
+        for(Color col: solution)
+            System.out.print(" "+ col.get_name());
+        System.out.println();
     }
 
     public Color[][] get_combinations()
@@ -54,8 +58,9 @@ public class Game
         if (nbAttempts >= availableAttempts)
             throw new NoMoreAttemptsException();
 
-        nbAttempts++;
         combinations[nbAttempts] = testedCombination;
+        answer[nbAttempts][0] = 0;
+        answer[nbAttempts][1] = 0;
 
         for (int i = 0; i < combinationSize; i++)
         {
@@ -67,20 +72,20 @@ public class Game
 
             if (testedCombination[i] == solution[i])
             {
-                answer[nbAttempts][1]++;
+                answer[nbAttempts][0]++;
                 continue;
             }
-
             for (int j = 0; j < combinationSize; j++)
             {
                 if (testedCombination[i] == solution[j])
                 {
-                    answer[nbAttempts][2]++;
-                    continue;
+                    answer[nbAttempts][1]++;
+                    break;
                 }
             }
         }
         int[] result = answer[nbAttempts].clone(); // clone in order to not allow the user to modify private field.
+        nbAttempts++;
         return result;
     }
 }

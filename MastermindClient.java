@@ -24,7 +24,10 @@ public class MastermindClient
             int nbProposition = 0;
 
             System.out.println("Welcome to the game of Mastermind.");
-            System.out.println("The possible colors are: red, blue, yellow, white, green and black.");
+            System.out.print("The possible colors are: ");
+            for(Color col: Color.values())
+                System.out.print("col.getName() ");
+            System.out.println(".");
             System.out.println("A new game starts.");
 
             while (true)
@@ -65,17 +68,33 @@ public class MastermindClient
                                         {
 
                                             System.out.println("enter the combination:");
-                                            ArrayList<String> combination = new ArrayList<String>();
 
-                                            //I use a do while so that it waits for the user to enter the line and only then stop if there is no token.
-                                            do
-                                                combination.add(userScanner.next());
-                                            while (userScanner.hasNext());
+                                            String tmp;
+                                            tmp = userScanner.nextLine();
+                                            String[]combination = tmp.split(" ");
 
                                             byte[] analysisResult = ClientProtocol.combination_analysis(serverOut, serverIn, combination);
                                             nbProposition++;
 
-                                            System.out.println("There are " + analysisResult[0] + " well placed colors and " + analysisResult[1] + "good but wrong placed colors");
+                                            if(analysisResult[0] == ClientProtocol.COMBINATION_LENGTH)
+                                            {
+                                                System.out.println("Congratulation you won!");
+                                                System.out.println("A new game started.");
+                                                ClientProtocol.new_game(serverOut, serverIn);
+                                                nbProposition = 0;
+                                            }
+
+                                            else if(nbProposition == ClientProtocol.AVAILABLE_ATTEMPTS)
+                                            {
+                                                System.out.println("Sadly you lost, but you can your revenge!");
+                                                System.out.println("A new game started.");
+                                                ClientProtocol.new_game(serverOut, serverIn);
+                                                nbProposition = 0;
+                                            }
+
+                                            else
+                                                System.out.println("There are " + analysisResult[0] + " well placed colors and " + analysisResult[1] + " good but wrong placed colors");
+
                                             succeed = true;
                                         }
 
@@ -100,18 +119,24 @@ public class MastermindClient
 
                                     case 2:
 
-                                        byte[][] list = ClientProtocol.combination_list(serverOut, serverIn, nbProposition);
-
-                                        System.out.println("Voici la liste des combinaisons déjà testées:");
-                                        for (int i = 0; i < nbProposition; i++)
+                                        if(nbProposition == 0)
                                         {
-                                            for (int j = 0; j < ClientProtocol.COMBINATION_LENGTH; j++)
-                                                System.out.print(Color.get_associated_color(list[i][j]) + " ");
-
-                                            System.out.print("well placed: " + list[i][ClientProtocol.COMBINATION_LENGTH] + " ");
-                                            System.out.println("bad placed: " + list[i][ClientProtocol.COMBINATION_LENGTH + 1]);
+                                            System.out.println("There are no tested combination");
                                         }
+                                        else
+                                        {
+                                            byte[][] list = ClientProtocol.combination_list(serverOut, serverIn, nbProposition);
 
+                                            System.out.println("Here is the already tested combinations' list:");
+                                            for (int i = 0; i < nbProposition; i++)
+                                            {
+                                                for (int j = 0; j < ClientProtocol.COMBINATION_LENGTH; j++)
+                                                    System.out.print((Color.get_associated_color(list[i][j])).get_name() + ", ");
+
+                                                System.out.print("well placed: " + list[i][ClientProtocol.COMBINATION_LENGTH] + ", ");
+                                                System.out.println("good but wrong placed: " + list[i][ClientProtocol.COMBINATION_LENGTH + 1]);
+                                            }
+                                        }
                                         succeed = true;
                                         break;
 
@@ -133,17 +158,23 @@ public class MastermindClient
                             catch (ServerException | IOException e)
                             {
                                 // in case of serverException or IOExeption, I restart the connection
-                                System.out.println("an error occurred, restarting the connection");
+                                System.out.println("an error occurred, restarting the connection and thus the game");
 
                                 sock.close();
                                 sock = new Socket("localhost", 2059);
                                 serverOut = sock.getOutputStream();
                                 serverIn = sock.getInputStream();
+
+                                succeed = true; //that's not really a success, but something was done and i want to avoid infinite loop on it
                             }
                         }
                     }
                 }
             }
+        }
+        catch (IOException e)
+        {
+            System.out.println("input/output problem, ending the program");
         }
         catch (Exception e)
         {
