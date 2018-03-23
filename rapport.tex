@@ -1,0 +1,47 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{lmodern} % police Latin Modern
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage[top=3cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\pagestyle{fancy}
+\lhead{Delaunoy Arnaud s153059}
+\hypersetup{                    % parametrage des hyperliens
+    colorlinks=true,                % colorise les liens
+    breaklinks=true,                % permet les retours à la ligne pour les liens trop longs
+    urlcolor= black,                 % couleur des hyperliens
+    linkcolor= black,                % couleur des liens internes aux documents (index, figures, tableaux, equations,...)
+    citecolor= green                % couleur des liens vers les references bibliographiques
+    }
+\title{Computer networking: project 1}
+\author{Delaunoy Arnaud \\ s153059}
+\date{}
+\lhead{Delaunoy Arnaud \\ s153059}
+\renewcommand\thesection{}
+\renewcommand\thesubsection{}
+\renewcommand\thesubsubsection{}
+
+\begin{document}
+\begin{titlepage}
+\maketitle
+\setcounter{page}{0}
+\thispagestyle{empty}
+\end{titlepage}
+
+\section{synchronization}
+The only datas that could be accessed by both server's threads are the protocol constants. Those beeing constant, synchronization problems could not happen. Therefore, there is no need for synchronization mechanism.
+\end{document}

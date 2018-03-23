@@ -30,7 +30,7 @@ public class MastermindClient
 
             System.out.println("Welcome to the game of Mastermind.");
             System.out.print("The possible colors are: ");
-            for(Color col: Color.values())
+            for (Color col : Color.values())
                 System.out.print("col.getName() ");
             System.out.println(".");
             System.out.println("A new game starts.");
@@ -80,30 +80,26 @@ public class MastermindClient
                                             tmp = userScanner.nextLine();
                                             StringTokenizer st = new StringTokenizer(tmp);
 
-                                            while(st.hasMoreTokens())
+                                            while (st.hasMoreTokens())
                                                 combination.add(st.nextToken());
 
 
                                             byte[] analysisResult = ClientProtocol.combination_analysis(serverOut, serverIn, combination);
                                             nbProposition++;
 
-                                            if(analysisResult[0] == ClientProtocol.COMBINATION_LENGTH)
+                                            if (analysisResult[0] == ClientProtocol.COMBINATION_LENGTH)
                                             {
                                                 System.out.println("Congratulation you won!");
                                                 System.out.println("A new game started.");
                                                 ClientProtocol.new_game(serverOut, serverIn);
                                                 nbProposition = 0;
-                                            }
-
-                                            else if(nbProposition == ClientProtocol.AVAILABLE_ATTEMPTS)
+                                            }else if (nbProposition == ClientProtocol.AVAILABLE_ATTEMPTS)
                                             {
                                                 System.out.println("Sadly you lost, but you can your revenge!");
                                                 System.out.println("A new game started.");
                                                 ClientProtocol.new_game(serverOut, serverIn);
                                                 nbProposition = 0;
-                                            }
-
-                                            else
+                                            }else
                                                 System.out.println("There are " + analysisResult[0] + " well placed colors and " + analysisResult[1] + " good but wrong placed colors");
 
                                             succeed = true;
@@ -130,11 +126,10 @@ public class MastermindClient
 
                                     case 2:
 
-                                        if(nbProposition == 0)
+                                        if (nbProposition == 0)
                                         {
                                             System.out.println("There are no tested combination");
-                                        }
-                                        else
+                                        }else
                                         {
                                             byte[][] list = ClientProtocol.combination_list(serverOut, serverIn, nbProposition);
 

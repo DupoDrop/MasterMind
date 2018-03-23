@@ -1,3 +1,7 @@
+/**
+ * class representing a mastermind game
+ */
+
 public class Game
 {
     private Color[] solution;
@@ -7,6 +11,12 @@ public class Game
     private int combinationSize;
     private int availableAttempts;
 
+    /**
+     * Game's constructor
+     *
+     * @param combinationSize   the size of the combinations handled by this game
+     * @param availableAttempts the amount of available attempts before loosing
+     */
     public Game(int combinationSize, int availableAttempts)
     {
         this.combinationSize = combinationSize;
@@ -17,13 +27,16 @@ public class Game
         start_game();
     }
 
+    /**
+     * start a game resetting all variables
+     */
     public void start_game()
     {
         nbAttempts = 0;
         solution = Color.get_random_combination(this.combinationSize);
         System.out.print("New game started, the solution is: ");
-        for(Color col: solution)
-            System.out.print(" "+ col.get_name());
+        for (Color col : solution)
+            System.out.print(" " + col.get_name());
         System.out.println();
     }
 
@@ -50,6 +63,14 @@ public class Game
         return nbAttempts;
     }
 
+    /**
+     * analyse a given combination returning the number and well placed and good colors
+     *
+     * @param testedCombination the combination to be tested
+     * @return an array of integers of size 2 which first element is the number of well placed colors the second the number of good colors.
+     * @throws BadSizeException        in case the combination has not the appropriated size
+     * @throws NoMoreAttemptsException in case all the attempts has already be used and the game is already lost.
+     */
     public int[] analyse_combination(Color[] testedCombination) throws BadSizeException, NoMoreAttemptsException
     {
         if (testedCombination.length != combinationSize)

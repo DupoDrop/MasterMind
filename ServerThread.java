@@ -3,6 +3,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * class representing a thread of the server dealing with one particular client
+ */
 public class ServerThread extends Thread
 {
     private Socket sock;
@@ -55,14 +58,14 @@ public class ServerThread extends Thread
                     }
                 }
             }
-            catch(ClientException e)
+            catch (ClientException e)
             {
                 ServerProtocol.request_error(clientOut);
             }
             // sock.close();
         }
 
-        catch(IOException e)
+        catch (IOException e)
         {
 
         }
